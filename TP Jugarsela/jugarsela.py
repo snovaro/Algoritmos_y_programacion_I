@@ -8,7 +8,7 @@ import io
 from passlib.hash import pbkdf2_sha256
 from datetime import datetime
 
-ANIO_ACTUAL = 2024
+ANIO_ACTUAL = datetime.today().year
 API_KEY = "827b3d5d7a5cfec03074a4fbe415dc37"
 
 def es_float(num:str) -> bool:
@@ -152,10 +152,10 @@ def mostrar_plantel(dicc_equipos:dict) -> None:
     lista_opciones = imprimir_equipos_LPA(lista_equipos)
     print("Ingrese de que equipo desea buscar su plantel: ", end="")
     equipo = validador_num(input_num(), lista_opciones)
-    
+    anio = input("Ingrese el anio del que desea ver la plantilla: ")
     id_equipo = lista_equipos_ids[equipo-1]
     headers = {'x-rapidapi-host': "v3.football.api-sports.io", 'x-rapidapi-key': API_KEY}
-    params ={"league":"128", "season": ANIO_ACTUAL, "team": id_equipo}
+    params ={"league":"128", "season": anio, "team": id_equipo}
     url = "https://v3.football.api-sports.io/players"
     paginas_respuesta = requests.get(url, params=params, headers=headers).json()["paging"]
     total_pages = paginas_respuesta["total"]
